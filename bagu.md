@@ -354,12 +354,12 @@
     使用梯度下降法求解时，取似然函数的**相反值**进行优化，求其梯度为：
    
 ```math
-    \begin{aligned}
-        \frac{\partial J(w)}{\partial w_j} & = -\sum_i \frac{\partial [y_i z_i - \ln(1 + e^{z_i})]}{\partial z_i} \cdot \frac{\partial z_i}{\partial w_j} \\
-        & = -\sum_i (y_i - p(x_i)) \cdot x_j
-    \end{aligned}
+\begin{aligned}
+    \frac{\partial J(w)}{\partial w_j} & = -\sum_i \frac{\partial [y_i z_i - \ln(1 + e^{z_i})]}{\partial z_i} \cdot \frac{\partial z_i}{\partial w_j} \\
+    & = -\sum_i (y_i - p(x_i)) \cdot x_j
+\end{aligned}
 ```
-```
+
 
     权重更新为：
     
