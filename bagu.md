@@ -344,12 +344,14 @@
     $$L(w) = \prod[p(x_i)]^{y_i}[1-p(x_i)]^{1-y_i}$$
     
     为了方便求解，一般取对数似然函数：
-    
-    \begin{align}
+```math
+    \begin{aligned}
         l(w) = \ln L(w) & = \sum[y_i\ln p(x_i) + (1-y_i)\ln (1-p(x_i))] \\
         & = \sum[y_i\ln\frac{p(x_i)}{1-p(x_i)} + \ln(1-p(x_i))] \\
         & = \sum[y_i z_i - \ln(1 + e^{z_i})]
-    \end{align}
+    \end{aligned}
+```
+¥
 
     使用梯度下降法求解时，取似然函数的**相反值**进行优化，求其梯度为：
    
@@ -359,7 +361,6 @@
         & = -\sum_i (y_i - p(x_i)) \cdot x_j
     \end{aligned}
 ```
-&nbsp;
 
   权重更新为：    
   $$w_j := w_j + \eta(\sum_i (y_i - p(x_i)) \cdot x_j),\text{ for }i\text{ in range}(n)$$
