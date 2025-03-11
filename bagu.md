@@ -344,22 +344,23 @@
     $$L(w) = \prod[p(x_i)]^{y_i}[1-p(x_i)]^{1-y_i}$$
     
     为了方便求解，一般取对数似然函数：
-    ```math
+   
+```math
     \begin{aligned}
         l(w) = \ln L(w) & = \sum[y_i\ln p(x_i) + (1-y_i)\ln (1-p(x_i))] \\
         & = \sum[y_i\ln\frac{p(x_i)}{1-p(x_i)} + \ln(1-p(x_i))] \\
         & = \sum[y_i z_i - \ln(1 + e^{z_i})]
     \end{aligned}
-    ```
+```
 
     使用梯度下降法求解时，取似然函数的**相反值**进行优化，求其梯度为：
    
-    ```math
+```math
     \begin{aligned}
         \frac{\partial J(w)}{\partial w_j} & = -\sum_i \frac{\partial [y_i z_i - \ln(1 + e^{z_i})]}{\partial z_i} \cdot \frac{\partial z_i}{\partial w_j} \\
         & = -\sum_i (y_i - p(x_i)) \cdot x_j
     \end{aligned}
-    ```
+```
 
   权重更新为：    
   $$w_j := w_j + \eta(\sum_i (y_i - p(x_i)) \cdot x_j),\text{ for }i\text{ in range}(n)$$
@@ -429,13 +430,15 @@
 
     在第 $t$ 轮训练中，在**保留前 $t-1$ 轮训练结果**的前提下，加入一棵树 $f_t$，使得目标函数**尽可能地降低**。用公式表达如下：
    
-    $$Obj_t = \sum_{i=1}^n l(y_i, \hat{y}_i^t)$$
+    $$Obj_t = \sum_{i=1}^n l(y_i, \hat{y}_i^t) $$
    
-    $$Obj_t =  = \sum_{i=1}^n l(y_i, \hat{y}_i^{t-1} + f_t(x_i)) $$
+    $$Obj_t =  \sum_{i=1}^n l(y_i, \hat{y}_i^{t-1} + f_t(x_i)) $$
 
     设损失函数为 MSE，则原目标函数写为：
    
-    $$Obj_t = \sum_{i=1}^n (y_i - (\hat{y}_i^{t-1} + f_t(x_i)))^2 = \sum_{i=1}^n[2(\hat{y}_i^{t-1} - y_i)f_t(x_i)+f_t(x_i)^2] + \sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2$$
+    $$Obj_t = \sum_{i=1}^n (y_i - (\hat{y}_i^{t-1} + f_t(x_i)))^2$$
+
+    $$Obj_t = \sum_{i=1}^n[2(\hat{y}_i^{t-1} - y_i)f_t(x_i)+f_t(x_i)^2] + \sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2 $$
    
     其中， $\sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2$ 与本轮无关，可以视为常数， $(\hat{y}_i^{t-1} - y_i)$ 一般被叫做**残差**，表示了上一轮预测值与真实值之间的差异，也是 XGBoost 算法在每一轮中预测的主要目标。即，将上一轮的训练结果看作一个整体，而新的一轮则对残差值进行预测。
 
