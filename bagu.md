@@ -74,11 +74,11 @@
     - 召回率定义为：
         $$R=\frac{TP}{TP+FN}$$
         即在正类的样本中，模型预测正确的比例。相比之下，召回率更加关注于那些**真实值为正类**的样本。
-    - 此外，$F_1$ 值定义为精确率与召回率的调和均值，即
+    - 此外$F_1$ 值定义为精确率与召回率的调和均值，即
     - 
         $$\frac{2}{F_1}=\frac{1}{P}+\frac{1}{R}$$
       
-        $$ F_1 = \frac{2 \times P \times R}{P + R} = \frac{2TP}{2TP+FP+FN}$$
+        $$F_1 = \frac{2 \times P \times R}{P + R} = \frac{2TP}{2TP+FP+FN}$$
         当精确率和召回率都高时，$F_1$ 值也会高。
 
 2. 混淆矩阵 Confusion Matrix
@@ -94,24 +94,16 @@
     - macro-$F_1$
 
         一种直接的做法是直接计算各个混淆矩阵的精确率和召回率，再计算平均值，分别得到 macro-$P$、macro-$R$和对应的macro-$F_1$. 
-        $$
-            \text{macro-}P = \frac{1}{n}\sum_{i=1}^n P_i, \qquad
-            \text{macro-}R = \frac{1}{n}\sum_{i=1}^n R_i,
-        $$
-        $$
-            \text{macro-}F_1 = \frac{2 \times \text{macro-}P \times \text{macro-}R}{\text{macro-}P + \text{macro-}R}
-        $$
+        $$\text{macro-}P = \frac{1}{n}\sum_{i=1}^n P_i, \qquad
+            \text{macro-}R = \frac{1}{n}\sum_{i=1}^n R_i,$$
+        $$\text{macro-}F_1 = \frac{2 \times \text{macro-}P \times \text{macro-}R}{\text{macro-}P + \text{macro-}R}$$
     
     - micro-$F_1$
 
         另一种做法是先将各个混淆矩阵的对应元素进行平均，得到$\overline{TP}$、$\overline{TN}$、$\overline{FP}$和$\overline{FN}$，再基于这些值计算出micro-$P$、micro-$R$和对应的micro-$F_1$. 
-        $$
-            \text{micro-}P = \frac{\overline{TP}}{\overline{TP}+\overline{FP}}, \qquad
-            \text{micro-}R = \frac{\overline{TP}}{\overline{TP}+\overline{FN}},
-        $$
-        $$
-            \text{micro-}F_1 = \frac{2 \times \text{micro-}P \times \text{micro-}R}{\text{micro-}P + \text{micro-}R}
-        $$
+        $$\text{micro-}P = \frac{\overline{TP}}{\overline{TP}+\overline{FP}}, \qquad
+            \text{micro-}R = \frac{\overline{TP}}{\overline{TP}+\overline{FN}},$$
+        $$\text{micro-}F_1 = \frac{2 \times \text{micro-}P \times \text{micro-}R}{\text{micro-}P + \text{micro-}R}$$
 
 4. ROC 曲线 / AUC 面积
 
