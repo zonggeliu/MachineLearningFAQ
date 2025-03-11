@@ -345,7 +345,7 @@
     
     为了方便求解，一般取对数似然函数：
    
-```math
+    ```math
 
     \begin{aligned}
         l(w) = \ln L(w) & = \sum[y_i\ln p(x_i) + (1-y_i)\ln (1-p(x_i))] \\
@@ -353,18 +353,18 @@
         & = \sum[y_i z_i - \ln(1 + e^{z_i})]
     \end{aligned}
 
-```
+    ```
 
     使用梯度下降法求解时，取似然函数的**相反值**进行优化，求其梯度为：
    
-```math
+    ```math
 
     \begin{aligned}
         \frac{\partial J(w)}{\partial w_j} & = -\sum_i \frac{\partial [y_i z_i - \ln(1 + e^{z_i})]}{\partial z_i} \cdot \frac{\partial z_i}{\partial w_j} \\
         & = -\sum_i (y_i - p(x_i)) \cdot x_j
     \end{aligned}
 
-```
+    ```
 
   权重更新为：    
   $$w_j := w_j + \eta(\sum_i (y_i - p(x_i)) \cdot x_j),\text{ for }i\text{ in range}(n)$$
