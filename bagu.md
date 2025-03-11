@@ -152,47 +152,35 @@
 
     - 最小二乘法以预测值和真实值的平方和作为损失函数 (MSELoss)。
 
-        $$
-            J(w)=\sum_{i=1}^m (h_w(x_i) - y_i)^2
-        $$
+        $$J(w)=\sum_{i=1}^m (h_w(x_i) - y_i)^2$$
 
     - 最大似然估计在已知 $x$ 与 $y$ 的情况下，以**概率最大**的角度，估计模型可能性最大的参数 $h_w$。设误差 $\epsilon_i = y_i - h_w(x_i)$， 由于 $\epsilon_i$ 符合高斯分布，可得概率密度函数：
         
-        $$
-            p(\epsilon_i) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(\epsilon_i)^2}{2\sigma^2}}
-        $$
+        $$p(\epsilon_i) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(\epsilon_i)^2}{2\sigma^2}}$$
 
         将 $\epsilon_i = y_i - h_w(x_i)$ 代入，可得：
 
-        $$
-            p(y_i | h_w(x_i)) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(y_i - h_w(x_i))^2}{2\sigma^2}}
-        $$
+        $$p(y_i | h_w(x_i)) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(y_i - h_w(x_i))^2}{2\sigma^2}}$$
 
         则似然函数公式如下：
 
-        $$
-            \begin{aligned}
+        $$\begin{aligned}
                 L(h_w(x_i)) &= \prod_{i=1}^m p(y_i | h_w(x_i))\\
                 &= \prod_{i=1}^m \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(y_i - h_w(x_i))^2}{2\sigma^2}} \\
-            \end{aligned}
-        $$
+            \end{aligned}$$
 
         等号两边取对数，不影响函数的极值点。
 
-        $$
-            \begin{aligned}
+        $$\begin{aligned}
                 \log L(h_w(x_i)) &= \sum_{i=1}^m \log \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(y_i - h_w(x_i))^2}{2\sigma^2}}\\
                 &= m \log \frac{1}{\sigma \sqrt{2\pi}} - \frac{1}{2\sigma^2} \sum_{i=1}^m (y_i - h_w(x_i))^2
-            \end{aligned}
-        $$
+            \end{aligned}$$
 
         我们知道 $h_w(x)$ 是关于权重 $w$ 的函数，不妨设为 $l(w)$。因此有：
             
-        $$
-            \begin{aligned}
+        $$\begin{aligned}
                 l(w) = m \log \frac{1}{\sigma \sqrt{2\pi}} - \frac{1}{2\sigma^2} \sum_{i=1}^m (y_i - h_w(x_i))^2
-            \end{aligned}
-        $$
+            \end{aligned}$$
 
         去除前面的常数项和常数系数，可以看到与最小二乘法的的公式一致，之后求解过程同最小二乘法。因此得出结论，最小二乘法与最大似然估计从两个不同的角度出发，得到一致的结果。
 
@@ -200,27 +188,19 @@
 
     我们常用**信息量**来量化数据中的信息。设事件 $x_0$ 发生的概率为 $p(x_0)$，则其信息量为：
 
-    $$
-        I(x_0) = -\log p(x_0)
-    $$
+    $$I(x_0) = -\log p(x_0)$$
 
     **熵** (Entropy) 被用来度量一个系统的混乱程度，代表一个系统中所有事件信息量的期望。熵越大，该系统的不确定性也越大。
 
-    $$
-        H(X) = -\sum_{x \in X}p(x_i) \log p(x_i)
-    $$
+    $$H(X) = -\sum_{x \in X}p(x_i) \log p(x_i)$$
 
     **相对熵** (Ralative Entropy)，又称 **KL 散度** (Kullback-Leibler Divergence)，是两个随机分布 $p$ 与 $q$ 之间的对数差值的期望。
 
-    $$
-        D_{KL}(p||q)=\sum_{x\in X} p(x)\log\frac{p(x)}{q(x)}=-\sum_{x\in X} p(x)[\log q(x) - \log p(x)]
-    $$
+    $$D_{KL}(p||q)=\sum_{x\in X} p(x)\log\frac{p(x)}{q(x)}=-\sum_{x\in X} p(x)[\log q(x) - \log p(x)]$$
 
     **交叉熵** (Cross-Entropy)，与 KL 散度类似，是两个随机分布 $p$ 与 $q$ 之间距离的另一种度量。
 
-    $$
-        CEH(p,q)=−\sum_{x \in X}p(x)logq(x)
-    $$
+    $$CEH(p,q)=−\sum_{x \in X}p(x)logq(x)$$
 
     > **为何在机器学习中常使用交叉熵而不是 KL 散度作为损失函数？**
     >
@@ -236,13 +216,9 @@
     ***在分类问题中***，常使用交叉熵作为损失函数，公式表达如下：
 
     * 二分类问题中，交叉熵损失函数为:
-        $$
-            L = -\frac{1}{N} \sum_i [y_i \log(p_i) + (1 - y_i) \log (1 - p_i)]
-        $$
+        $$L = -\frac{1}{N} \sum_i [y_i \log(p_i) + (1 - y_i) \log (1 - p_i)]$$
     * 多分类问题中，交叉熵损失函数为：
-        $$
-            L = -\frac{1}{N} \sum_i \sum_c^M [y_{ic} \log (p_{ic})]
-        $$
+        $$L = -\frac{1}{N} \sum_i \sum_c^M [y_{ic} \log (p_{ic})]$$
         其中， $M$ 为类别数量。
 
 
@@ -254,9 +230,7 @@
     - 联合概率：事件 A 和事件 B 同时发生的概率，即 $p(A, B) = p(A|B) * p(B)$；
     - 全概率：若事件 B1, B2, ..., Bn 构成一个**完备事件组**，即他们两两不相容，且和为全集，则对于任意事件 A 有：<br>$p(A)=\sum^n_{i=1} [p(A|B_i)*p(B_i)]$
     - 贝叶斯概率：在日常生活中，有时候我们难以直接求出 $p(A_i|B)$，但我们若已知 $p(B|A_i)$， $p(A_i)$ 和 $p(B)$，则有：
-        $$
-            p(A_i|B) = \frac{p(B|A_i)*p(A_i)}{p(B)} = \frac{p(B|A_i)*p(A_i)}{\sum^n_{j=1}p(B|A_j)*p(A_j)}
-        $$
+        $$p(A_i|B) = \frac{p(B|A_i)*p(A_i)}{p(B)} = \frac{p(B|A_i)*p(A_i)}{\sum^n_{j=1}p(B|A_j)*p(A_j)}$$
         其中， $p(A_i|B)$ 被称为**后验概率**， $p(A_i)$ 被称为**先验概率**。
 
 
@@ -311,17 +285,11 @@
 2. 硬间隔最大化
 
     首先定义超平面 $(w,b)$ 关于样本点 $(x_i,y_i)$ 的**函数间隔**为 $\hat{\gamma}_i=y_i(wx_i+b)$ 但是，如果成比例地改变 $w$ 和 $b$ 的值，函数间隔会发生改变，但其超平面并没有变。为了解决这个问题，引入**几何间隔**为超平面与样本点的直线距离 $\gamma_i=y_i(\frac{w}{||w||}x_i+\frac{b}{||w||})$。硬间隔最大化的优化目标就是找到合适的超平面 $(w,b)$，使得点到超平面的间隔最大，即：
-    $$
-        \max_{w,b} \gamma, \text{s.t.,} y_i(\frac{w}{||w||}x_i+\frac{b}{||w||}) \geq \gamma, i=1,2,...,N
-    $$
+    $$\max_{w,b} \gamma, \text{s.t.,} y_i(\frac{w}{||w||}x_i+\frac{b}{||w||}) \geq \gamma, i=1,2,...,N$$
     我们可以将这个优化问题转化为：
-    $$
-        \min_{w,b} \frac{1}{2}||w||^2, \text{s.t.,} y_i(wx_i+b)-1 \geq 0,i=1,2,...,N
-    $$
+    $$\min_{w,b} \frac{1}{2}||w||^2, \text{s.t.,} y_i(wx_i+b)-1 \geq 0,i=1,2,...,N$$
     可以使用拉格朗日乘子将该问题转换为对偶问题，这样可以便于求解：
-    $$
-        \min_\alpha \frac{1}{2}\sum_i^N \sum_j^N \alpha_i \alpha_j y_iy_j(x_i\cdot x_j)-\sum_i^N \alpha_i, \text{s.t.,} \sum_i^N \alpha_i y_i=0, \alpha_i \geq 0,i=1,2,...,N
-    $$
+    $$\min_\alpha \frac{1}{2}\sum_i^N \sum_j^N \alpha_i \alpha_j y_iy_j(x_i\cdot x_j)-\sum_i^N \alpha_i, \text{s.t.,} \sum_i^N \alpha_i y_i=0, \alpha_i \geq 0,i=1,2,...,N$$
     转换为对偶问题还可以便于引入**核技巧**来解决非线性问题，即将内积 $(x_i\cdot x_j)$ 用核函数 $K(x_i,x_j)=\phi(x_i)\cdot\phi(x_j)$ 来代替。
 
 3. 软间隔最大化
@@ -345,37 +313,27 @@
 
     逻辑回归主要考虑二分类问题。给定数据集：
 
-    $$
-        D=(x_1,y_1), (x_2,y_2),...,(x_N,y_N), x_i\in R^n
-    $$
+    $$D=(x_1,y_1), (x_2,y_2),...,(x_N,y_N), x_i\in R^n$$
 
     由于 $w^T x+b$取值连续，因此可以用它来拟合条件概率 $p(Y=1|x)$. 最理想的函数其实是：
 
-    $$
-        p(Y=1|x)=
+    $$p(Y=1|x)=
         \begin{cases}
             0, & z < 0\\
             0.5, & z = 0 \\
             1, & z > 0
         \end{cases}
-        , z = w^T x + b
-    $$
+        , z = w^T x + b$$
 
     但是，这个函数不可微，因此，我们使用 sigmoid 函数来拟合概率：
 
-    $$
-        y=\frac{1}{1+e^z}, z=w^T x + b
-    $$
+    $$y=\frac{1}{1+e^z}, z=w^T x + b$$
 
     将 $y$ 视为类后验概率估计，则重写公式有：
 
-    $$
-        P(Y=1|x)=\frac{1}{1+e^z}, z=w^T x + b,\\
-    $$
+    $$P(Y=1|x)=\frac{1}{1+e^z}, z=w^T x + b,\\$$
     
-    $$
-        z = \ln\frac{P(Y=1|x)}{1-P(Y=1|x)}
-    $$
+    $$z = \ln\frac{P(Y=1|x)}{1-P(Y=1|x)}$$
 
     因此，逻辑回归实际上是**使用线性回归模型的预测值来逼近分类任务的对数几率**，其优点有：
 
@@ -390,22 +348,18 @@
     
     为了方便求解，一般取对数似然函数：
     
-    $$
-    \begin{aligned}
+    $$\begin{aligned}
         l(w) = \ln L(w) & = \sum[y_i\ln p(x_i) + (1-y_i)\ln (1-p(x_i))] \\
         & = \sum[y_i\ln\frac{p(x_i)}{1-p(x_i)} + \ln(1-p(x_i))] \\
         & = \sum[y_i z_i - \ln(1 + e^{z_i})]
-    \end{aligned}
-    $$
+    \end{aligned}$$
 
     使用梯度下降法求解时，取似然函数的**相反值**进行优化，求其梯度为：
 
-    $$    
-    \begin{aligned}
+    $$\begin{aligned}
         \frac{\partial J(w)}{\partial w_j} & = -\sum_i \frac{\partial [y_i z_i - \ln(1 + e^{z_i})]}{\partial z_i} \cdot \frac{\partial z_i}{\partial w_j} \\
         & = -\sum_i (y_i - p(x_i)) \cdot x_j
-    \end{aligned}
-    $$
+    \end{aligned}$$
 
     权重更新为：
     
@@ -428,12 +382,8 @@
 
     简要来说，我们在每次选择划分特征时，都会选择**对分类最有帮助**的特征来作为接下来的划分特征。具体来说，我们通过计算特征的**熵**来评价特征的重要程度。
     **熵** (Entropy) 被用来度量一个系统的混乱程度，代表一个系统中所有事件信息量的期望。
-    $$
-        H(X) = -\sum_{x \in X}p(x_i) \log p(x_i)
-    $$
-    $$
-        H(X|A) = -\sum_{i=1}^d p(A=a_i)H(X|A=a_i)
-    $$
+    $$H(X) = -\sum_{x \in X}p(x_i) \log p(x_i)$$
+    $$H(X|A) = -\sum_{i=1}^d p(A=a_i)H(X|A=a_i)$$
     熵越大，该系统的不确定性也越大。构造树的基本思想时随着树深度的增加，节点的熵迅速降低。熵降低的速度越快越好，以便生成一个高度尽可能**矮**的决策树。
 
     首先，我们根据分类的 label，计算不选择任何特征时，系统的熵值 $H(D)$。随后，我们分别计算考虑了各个特征之后，系统的熵值。我们计算每个特征的**信息增益** $Gain(D|A) = H(D) - H(D|A)$，并选择信息增益最大的特征作为新节点的划分特征。
@@ -442,17 +392,11 @@
 
     - ID3。使用**信息增益**作为特征选择的评估方式。缺点主要是：当遇到稀疏特征时（如用户 ID），由于每项特征的样本比较少，可能会出现信息增益特别大的情况，导致决策树错误选择该稀疏特征作为划分特征。通常来说，ID3决策树偏向选择那些取值较多的特征属性。
     - C4.5。使用**信息增益率**作为特征选择的评估方式。信息增益率计算方式如下：
-        $$
-            GainRatio(D|A) = \frac{Gain(D|A)}{H(A)} = \frac{H(D)-H(D|A)}{H(A)}
-        $$
+        $$GainRatio(D|A) = \frac{Gain(D|A)}{H(A)} = \frac{H(D)-H(D|A)}{H(A)}$$
         然而，信息增益率偏向选择取值较少的特征。因此，C4.5决策树会选择信息增益大于平均水平的特征来进行信息增益率的计算。此外，C4.5相对于ID3决策树，增加了对连续值和缺失值的处理过程。
     - CART。对于分类问题，CART 决策树使用 **Gini 系数**作为评估标准；而对于回归问题，CART 决策树使用 **MSE** 作为评估标准。公式如下：
-        $$
-            Gini(X) = \sum_{x\in X} p(x_i)(1-p(x_i))
-        $$
-        $$
-            Gini(X|A) = \sum_{i=1}^d p(A=a_i) Gini(X|A=a_i)
-        $$
+        $$Gini(X) = \sum_{x\in X} p(x_i)(1-p(x_i))$$
+        $$Gini(X|A) = \sum_{i=1}^d p(A=a_i) Gini(X|A=a_i)$$
 
 4. 随机森林 Random Forest, RF
 
