@@ -50,7 +50,7 @@
     >
     > ![l1vsl2_03](imgs/l1vsl2_03.jpg)
     >
-    > 略加推导可以得到，当施加 L2 正则化时，当且仅当损失函数原本的导数为 0 时，损失函数才会在 $x=0$ 处极小；而施加 L1 正则化时，参数 $C$ 与损失函数的导数仅需满足 $C>\lvert L \lvert$ 的关系，$x=0$ 便会成为损失函数的一个极小值点。 
+    > 略加推导可以得到，当施加 L2 正则化时，当且仅当损失函数原本的导数为 0 时，损失函数才会在 $x=0$ 处极小；而施加 L1 正则化时，参数 $C$ 与损失函数的导数仅需满足 $C>\lvert L \lvert$ 的关系， $x=0$ 便会成为损失函数的一个极小值点。 
     >
     > 上面只分析了一个参数 $x$。事实上 L1 正则化会使得许多参数的最优值变成 0，使得模型变得稀疏。利用这样的特性，我们便可以使用L1正则化来帮助筛选特征。
 
@@ -79,7 +79,7 @@
         $$\frac{2}{F_1}=\frac{1}{P}+\frac{1}{R}$$
       
         $$F_1 = \frac{2 \times P \times R}{P + R} = \frac{2TP}{2TP+FP+FN}$$
-        当精确率和召回率都高时，$F_1$ 值也会高。
+        当精确率和召回率都高时， $F_1$ 值也会高。
 
 2. 混淆矩阵 Confusion Matrix
 
@@ -95,14 +95,14 @@
 
         一种直接的做法是直接计算各个混淆矩阵的精确率和召回率，再计算平均值，分别得到 macro-$P$、macro-$R$和对应的macro-$F_1$. 
         $$\text{macro-}P = \frac{1}{n}\sum_{i=1}^n P_i, \qquad
-            \text{macro-}R = \frac{1}{n}\sum_{i=1}^n R_i,$$
+            \text{macro-}R = \frac{1}{n}\sum_{i=1}^n R_i， $$
         $$\text{macro-}F_1 = \frac{2 \times \text{macro-}P \times \text{macro-}R}{\text{macro-}P + \text{macro-}R}$$
     
     - micro-$F_1$
 
         另一种做法是先将各个混淆矩阵的对应元素进行平均，得到$\overline{TP}$、$\overline{TN}$、$\overline{FP}$和$\overline{FN}$，再基于这些值计算出micro-$P$、micro-$R$和对应的micro-$F_1$. 
         $$\text{micro-}P = \frac{\overline{TP}}{\overline{TP}+\overline{FP}}, \qquad
-            \text{micro-}R = \frac{\overline{TP}}{\overline{TP}+\overline{FN}},$$
+            \text{micro-}R = \frac{\overline{TP}}{\overline{TP}+\overline{FN}}， $$
         $$\text{micro-}F_1 = \frac{2 \times \text{micro-}P \times \text{micro-}R}{\text{micro-}P + \text{micro-}R}$$
 
 4. ROC 曲线 / AUC 面积
@@ -235,7 +235,7 @@
     >       D_{KL}(p||q) = CEH(p,q) - H(p)
     >    $$
     >    
-    > 在机器学习中，可以将 $p$ 看作真实分布，$q$ 为预测分布。则当 $p$ 的分布已知时，$H(p)$ 为常数，交叉熵与 KL 散度等价。
+    > 在机器学习中，可以将 $p$ 看作真实分布， $q$ 为预测分布。则当 $p$ 的分布已知时， $H(p)$ 为常数，交叉熵与 KL 散度等价。
 
 
     ***在分类问题中***，常使用交叉熵作为损失函数，公式表达如下：
@@ -248,7 +248,7 @@
         $$
             L = -\frac{1}{N} \sum_i \sum_c^M [y_{ic} \log (p_{ic})]
         $$
-        其中，$M$ 为类别数量。
+        其中， $M$ 为类别数量。
 
 
 ### 朴素贝叶斯 Naive Bayes
@@ -258,11 +258,11 @@
     - 条件概率：事件 A 在另外一个事件 B 已经发生条件下的发生概率，即 $p(A|B)$；
     - 联合概率：事件 A 和事件 B 同时发生的概率，即 $p(A, B) = p(A|B) * p(B)$；
     - 全概率：若事件 B1, B2, ..., Bn 构成一个**完备事件组**，即他们两两不相容，且和为全集，则对于任意事件 A 有：<br>$p(A)=\sum^n_{i=1} [p(A|B_i)*p(B_i)]$
-    - 贝叶斯概率：在日常生活中，有时候我们难以直接求出 $p(A_i|B)$，但我们若已知 $p(B|A_i)$，$p(A_i)$ 和 $p(B)$，则有：
+    - 贝叶斯概率：在日常生活中，有时候我们难以直接求出 $p(A_i|B)$，但我们若已知 $p(B|A_i)$， $p(A_i)$ 和 $p(B)$，则有：
         $$
             p(A_i|B) = \frac{p(B|A_i)*p(A_i)}{p(B)} = \frac{p(B|A_i)*p(A_i)}{\sum^n_{j=1}p(B|A_j)*p(A_j)}
         $$
-        其中，$p(A_i|B)$ 被称为**后验概率**，$p(A_i)$ 被称为**先验概率**。
+        其中， $p(A_i|B)$ 被称为**后验概率**， $p(A_i)$ 被称为**先验概率**。
 
 
 2. 朴素贝叶斯分类器
@@ -500,11 +500,11 @@
             & = \sum_{i=1}^n[2(\hat{y}_i^{t-1} - y_i)f_t(x_i)+f_t(x_i)^2] + \sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2
         \end{aligned}
     $$
-    其中，$\sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2$ 与本轮无关，可以视为常数，$(\hat{y}_i^{t-1} - y_i)$ 一般被叫做**残差**，表示了上一轮预测值与真实值之间的差异，也是 XGBoost 算法在每一轮中预测的主要目标。即，将上一轮的训练结果看作一个整体，而新的一轮则对残差值进行预测。
+    其中， $\sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2$ 与本轮无关，可以视为常数， $(\hat{y}_i^{t-1} - y_i)$ 一般被叫做**残差**，表示了上一轮预测值与真实值之间的差异，也是 XGBoost 算法在每一轮中预测的主要目标。即，将上一轮的训练结果看作一个整体，而新的一轮则对残差值进行预测。
 
     ![xgboost](imgs/XGBoost.png)
 
-    此外，XGBoost 在每个叶子节点上都增加了正则化项 $\Omega(f_t) = \gamma T + \lambda\frac{1}{2}\sum^T_{j=1} w_j^2$，其中，$T$ 代表叶子节点数量，$\lambda\frac{1}{2}\sum^T_{j=1} w_j^2$ 为 L2 正则化项。
+    此外，XGBoost 在每个叶子节点上都增加了正则化项 $\Omega(f_t) = \gamma T + \lambda\frac{1}{2}\sum^T_{j=1} w_j^2$，其中， $T$ 代表叶子节点数量， $\lambda\frac{1}{2}\sum^T_{j=1} w_j^2$ 为 L2 正则化项。
 
 
 
@@ -526,7 +526,7 @@
     >       \hat{x_i} = \frac{x_i - \mu_\mathcal{B}}{\sqrt{\sigma^2_{\mathcal{B}} + \epsilon}}
     > $$
     > 
-    > 其中，$\mu_\mathcal{B}$ 为均值，$\sigma^2_{\mathcal{B}}$ 为方差。在该操作中，偏置项在计算中会被抵消掉，故偏置项不起作用。
+    > 其中， $\mu_\mathcal{B}$ 为均值， $\sigma^2_{\mathcal{B}}$ 为方差。在该操作中，偏置项在计算中会被抵消掉，故偏置项不起作用。
 
 
 2. Back Propagation
@@ -670,10 +670,10 @@
     在 NLP 中，我们希望用一个数学形式表示不同的单词，于是便有了词向量。最初的词向量是 one-hot 词向量，但这种向量维度过大，非常稀疏，且不能反映词与词之间的关系。于是便有了**分布式词向量**，即固定 embedding 的维度，embedding 中的每一个值都是通过计算不同单词的贡献得到的。
 
     训练 word2vec 模型主要有两种方式：CBOW 和 Skip-Gram。
-    - CBOW 是让模型根据某个词前面的 C 个词和之后的 C 个词，预测这个词出现的概率。如图，训练过程其实就是学习这两个矩阵 $W$ 和 $W'$，其中，$W$ 矩阵又被叫做 lookup table，即所有词嵌入向量的词表。
+    - CBOW 是让模型根据某个词前面的 C 个词和之后的 C 个词，预测这个词出现的概率。如图，训练过程其实就是学习这两个矩阵 $W$ 和 $W'$，其中， $W$ 矩阵又被叫做 lookup table，即所有词嵌入向量的词表。
 
         ![word2vec-CBOW](imgs/word2vec-CBOW.jpg)
-    - Skip-Gram 和 CBOW 相反，是根据某一个词来预测它的前 C 个词和后 C 个词。同样训练两个矩阵 $W$ 和 $W'$，其中，$W$ 矩阵是 lookup table。一般来说，Skip-Gram 的训练时间比 CBOW 要慢。
+    - Skip-Gram 和 CBOW 相反，是根据某一个词来预测它的前 C 个词和后 C 个词。同样训练两个矩阵 $W$ 和 $W'$，其中， $W$ 矩阵是 lookup table。一般来说，Skip-Gram 的训练时间比 CBOW 要慢。
 
         ![word2vec-skip-gram](imgs/word2vec-skip-gram.jpg)
     
@@ -684,7 +684,7 @@
 
 3. GloVe 模型
 
-    GloVe 模型利用了词语的共现频率来计算相关性。首先引入词语的共现矩阵 $X$，其中 $X_{ij}$ 是在 word i 的上下文中 word j 的出现次数，$X_i = \sum_k X_{ik}$ 是出现在 word i 的上下文中所有词的出现次数，则共现概率为 $P_ij = P(j|i) = \frac{X_{ij}}{X_i}$，是word j 出现在 word i 上下文的概率。可以发现，共现概率的比例可以反映两个词的**相关度**。
+    GloVe 模型利用了词语的共现频率来计算相关性。首先引入词语的共现矩阵 $X$，其中 $X_{ij}$ 是在 word i 的上下文中 word j 的出现次数， $X_i = \sum_k X_{ik}$ 是出现在 word i 的上下文中所有词的出现次数，则共现概率为 $P_ij = P(j|i) = \frac{X_{ij}}{X_i}$，是word j 出现在 word i 上下文的概率。可以发现，共现概率的比例可以反映两个词的**相关度**。
 
 
 ### HMM / CRF
@@ -758,7 +758,7 @@
         P(I|O) = \frac{1}{Z(O)}e^{\sum_i^T \sum_k^M \lambda_k f_k(O, I_{i-1}, I_i, i)}
     $$
 
-    其中，下标 i 表示当前所在的节点（token）位置，下标 k 表示第 k 个特征函数，并且每个特征函数都附属一个权重 $\lambda_k$，$\frac{1}{Z(O)}$ 是归一化系数。
+    其中，下标 i 表示当前所在的节点（token）位置，下标 k 表示第 k 个特征函数，并且每个特征函数都附属一个权重 $\lambda_k$， $\frac{1}{Z(O)}$ 是归一化系数。
 
 
 ### RNN / LSTM
@@ -848,12 +848,12 @@
     Attention 的计算过程如下：
 
     - 得到 encoder 中的 hidden state $\overrightarrow{h_e} = (h_1, h_2, ..., h_n)$。
-    - 假设当前翻译到的 decoder state 为 $\overrightarrow{s_{t-1}}$，则可以计算该状态与输入的每一个单元 $h_j$ 状态的关联性 $e_{tj} = a(s_{t-1},h_j)$，写成向量形式则为 $\overrightarrow{e_t} = a(\overrightarrow{s_{t-1}}, \overrightarrow{h})$，其中，$a$ 是相关性的计算，常见的计算方式有：
+    - 假设当前翻译到的 decoder state 为 $\overrightarrow{s_{t-1}}$，则可以计算该状态与输入的每一个单元 $h_j$ 状态的关联性 $e_{tj} = a(s_{t-1},h_j)$，写成向量形式则为 $\overrightarrow{e_t} = a(\overrightarrow{s_{t-1}}, \overrightarrow{h})$，其中， $a$ 是相关性的计算，常见的计算方式有：
       - 直接点乘 $a(s_{t-1},h_j)=\overrightarrow{s_{t-1}}^T\cdot\overrightarrow{h}$；
-      - 加权点乘 $a(s_{t-1},h_j)=\overrightarrow{s_{t-1}}^T\cdot W \cdot\overrightarrow{h}$，其中，$W$ 是可训练矩阵；
-      - 多层感知机 $a(s_{t-1},h_j)=V \cdot \tanh(W_1 \cdot \overrightarrow{s_{t-1}} + W_2 \cdot \overrightarrow{h})$，其中，$V$、$W_1$、$W_2$ 都是可训练矩阵；
+      - 加权点乘 $a(s_{t-1},h_j)=\overrightarrow{s_{t-1}}^T\cdot W \cdot\overrightarrow{h}$，其中， $W$ 是可训练矩阵；
+      - 多层感知机 $a(s_{t-1},h_j)=V \cdot \tanh(W_1 \cdot \overrightarrow{s_{t-1}} + W_2 \cdot \overrightarrow{h})$，其中， $V$、$W_1$、$W_2$ 都是可训练矩阵；
       - 缩放的点乘 $a(s_{t-1},h_j)=\frac{\overrightarrow{s_{t-1}}^T\cdot\overrightarrow{h}}{\sqrt{|\overrightarrow{h}|}}$。Softmax 函数对非常大的输入很敏感。这会使得梯度的传播出现问题，并且会导致学习的速度下降，甚至会导致学习的停止。那如果我们使用 $\sqrt{|\overrightarrow{h}|}$ 来对输入的向量做缩放，就能够防止进入到 softmax 函数的饱和区，使梯度过小。
-    - 对 $\overrightarrow{e_t}$ 进行 softmax 操作后得到 Attention 分布 $\overrightarrow{\alpha_t} = softmax(\overrightarrow{e_t})$，其中，$\alpha_{tj} = \frac{\exp(e_{tj})}{\sum_{i=1}^n \exp(e_{ti})}$。
+    - 对 $\overrightarrow{e_t}$ 进行 softmax 操作后得到 Attention 分布 $\overrightarrow{\alpha_t} = softmax(\overrightarrow{e_t})$，其中， $\alpha_{tj} = \frac{\exp(e_{tj})}{\sum_{i=1}^n \exp(e_{ti})}$。
     - 计算得到**上下文表示** $\overrightarrow{c_t}=\sum_{j=1}^n \alpha_{tj}\cdot h_j$。
     - 我们可以将该上下文表示利用到下一个时间步的状态生成 $s_t = f(s_{t-1}, y_{t-1}, c_t)$。
 
@@ -878,7 +878,7 @@
         Self-Attention 的计算过程如下：
       - 输入序列 $\overrightarrow{x}$；
       - 将 $\overrightarrow{x}$ 分别与对应 Q, K, V 的三个可训练矩阵 $W_q$, $W_k$, $W_v$ 点乘，得到 $Q=\overrightarrow{x}\cdot W_q$, $K=\overrightarrow{x}\cdot W_k$, $V=\overrightarrow{x}\cdot W_v$；
-      - 计算 $Attention(Q,K,V)=softmax(\frac{Q\cdot K^T}{\sqrt{d_K}})\cdot V$，其中，$d_K$ 为 $K$ 的维度。
+      - 计算 $Attention(Q,K,V)=softmax(\frac{Q\cdot K^T}{\sqrt{d_K}})\cdot V$，其中， $d_K$ 为 $K$ 的维度。
 
     - Multi-Head Attention
 
@@ -915,7 +915,7 @@
         ```
     
     - Add & Norm 层
-      - Add 指的是 Residual Connection，$y=F(x)+x$. 与 ResNet 的原理相似，是将上一层的信息直接传到下一层，可以帮助解决多层神经网络训练困难的问题。同时，引入残差连接有助于减轻神经网络在深层退化的问题。
+      - Add 指的是 Residual Connection， $y=F(x)+x$. 与 ResNet 的原理相似，是将上一层的信息直接传到下一层，可以帮助解决多层神经网络训练困难的问题。同时，引入残差连接有助于减轻神经网络在深层退化的问题。
       - Norm 指的是 Layer Normalization，在层与层之间对每一行数据进行缩放。这样可以缓解梯度消失的状况，同时使模型更快收敛。
         > **Batch Normalization 和 Layer Normalization 的区别？**
         > 
@@ -1025,7 +1025,7 @@
         $$
             \mathcal{L}_{attn} = \frac{1}{h}\sum_{i=1}^h \text{MSE}(A_i^S, A_i^T)
         $$
-        其中，h 为 Attention 头数，$A_i\in \{A_q,A_k,A_v\}$。
+        其中，h 为 Attention 头数， $A_i\in \{A_q,A_k,A_v\}$。
 
         $$
             \mathcal{L}_{hidn} = \text{MSE}(H^SW_h, H^T)
