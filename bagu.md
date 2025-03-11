@@ -386,13 +386,16 @@
 
     简要来说，我们在每次选择划分特征时，都会选择**对分类最有帮助**的特征来作为接下来的划分特征。具体来说，我们通过计算特征的**熵**来评价特征的重要程度。
     **熵** (Entropy) 被用来度量一个系统的混乱程度，代表一个系统中所有事件信息量的期望。
+   
     $$H(X) = -\sum_{x \in X}p(x_i) \log p(x_i)$$
+   
     $$H(X|A) = -\sum_{i=1}^d p(A=a_i)H(X|A=a_i)$$
+   
     熵越大，该系统的不确定性也越大。构造树的基本思想时随着树深度的增加，节点的熵迅速降低。熵降低的速度越快越好，以便生成一个高度尽可能**矮**的决策树。
 
     首先，我们根据分类的 label，计算不选择任何特征时，系统的熵值 $H(D)$。随后，我们分别计算考虑了各个特征之后，系统的熵值。我们计算每个特征的**信息增益** $Gain(D|A) = H(D) - H(D|A)$，并选择信息增益最大的特征作为新节点的划分特征。
 
-3. 决策树的分类
+4. 决策树的分类
 
     - ID3。使用**信息增益**作为特征选择的评估方式。缺点主要是：当遇到稀疏特征时（如用户 ID），由于每项特征的样本比较少，可能会出现信息增益特别大的情况，导致决策树错误选择该稀疏特征作为划分特征。通常来说，ID3决策树偏向选择那些取值较多的特征属性。
     - C4.5。使用**信息增益率**作为特征选择的评估方式。信息增益率计算方式如下：
@@ -402,7 +405,7 @@
         $$Gini(X) = \sum_{x\in X} p(x_i)(1-p(x_i))$$
         $$Gini(X|A) = \sum_{i=1}^d p(A=a_i) Gini(X|A=a_i)$$
 
-4. 随机森林 Random Forest, RF
+5. 随机森林 Random Forest, RF
 
     使用 **Bagging 算法**，即有放回采样地选取 $n$ 个样本，建立 $m$ 个决策树分类器。多个分类器采用**投票机制**来产生最终的分类结果。
     随机森林的“随机”有两重含义：
@@ -697,9 +700,7 @@
 
     相比于 HMM 需要对状态转移矩阵和观测概率矩阵建模，CRF 属于判别模型，其直接对 $P(I|O)$ 建模：
 
-    $$ 
-        P(I|O) = \frac{1}{Z(O)}e^{\sum_i^T \sum_k^M \lambda_k f_k(O, I_{i-1}, I_i, i)}
-    $$
+    $$ P(I|O) = \frac{1}{Z(O)}e^{\sum_i^T \sum_k^M \lambda_k f_k(O, I_{i-1}, I_i, i)}$$
 
     其中，下标 i 表示当前所在的节点（token）位置，下标 k 表示第 k 个特征函数，并且每个特征函数都附属一个权重 $\lambda_k$， $\frac{1}{Z(O)}$ 是归一化系数。
 
@@ -957,22 +958,18 @@
     - Embedding Layer Distillation
 
         TinyBERT 的 embedding 大小比教师模型更小，因此需要通过一个维度变换矩阵来把学生模型的 embedding 映射到教师模型所在空间，再通过 MSE 来计算 loss：
-        $$
-            \mathcal{L}_{embd}= \text{MSE}(E^SW_e, E^T)
-        $$
+      
+        $$\mathcal{L}_{embd}= \text{MSE}(E^SW_e, E^T)$$
 
     - Transformer Layer Distillation
 
         TinyBERT 的知识蒸馏采取每隔 k 层蒸馏的方式。设 Teacher BERT 有 12 层，TinyBERT 有 4 层，则学生模型每隔 3 层就与教师模型计算一次 loss，其中，loss 又分为 Attention Loss 和 Hidden Loss：
 
-        $$
-            \mathcal{L}_{attn} = \frac{1}{h}\sum_{i=1}^h \text{MSE}(A_i^S, A_i^T)
-        $$
+        $$\mathcal{L}_{attn} = \frac{1}{h}\sum_{i=1}^h \text{MSE}(A_i^S, A_i^T)$$
+      
         其中，h 为 Attention 头数， $A_i\in \{A_q,A_k,A_v\}$。
 
-        $$
-            \mathcal{L}_{hidn} = \text{MSE}(H^SW_h, H^T)
-        $$
+        $$\mathcal{L}_{hidn} = \text{MSE}(H^SW_h, H^T)$$
 
     - Prediction Layer Distillation
 
