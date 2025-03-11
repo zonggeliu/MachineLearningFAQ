@@ -314,13 +314,15 @@
     $$D=(x_1,y_1), (x_2,y_2),...,(x_N,y_N), x_i\in R^n$$
 
     由于 $w^T x+b$取值连续，因此可以用它来拟合条件概率 $p(Y=1|x)$. 最理想的函数其实是：
-    $$p(Y=1|x)=
+```math
+      p(Y=1|x)=
        \begin{cases}
             0, & z < 0\\
             0.5, & z = 0 \\
             1, & z > 0
         \end{cases}
-        , z = w^T x + b$$
+        , z = w^T x + b
+```
 
     但是，这个函数不可微，因此，我们使用 sigmoid 函数来拟合概率：
 
@@ -361,7 +363,6 @@
         & = -\sum_i (y_i - p(x_i)) \cdot x_j
     \end{aligned}
 ```
-\
 
   权重更新为：    
   $$w_j := w_j + \eta(\sum_i (y_i - p(x_i)) \cdot x_j),\text{ for }i\text{ in range}(n)$$
