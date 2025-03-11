@@ -24,9 +24,9 @@
 1. L1 vs L2
 
     - L1正则化，又称LASSO、L1范数，是所有参数的绝对值之和。
-        $$
+        $
             \lVert x \lVert_1=\sum_{i=1}^m\lvert x_i \lvert
-        $$
+        $
     
     - L2正则化，又称Ridge，岭回归，是所有参数的平方和的平方根。
 
