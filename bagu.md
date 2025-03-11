@@ -345,13 +345,11 @@
     
     为了方便求解，一般取对数似然函数：
     
-    ```math
     \begin{align}
         l(w) = \ln L(w) & = \sum[y_i\ln p(x_i) + (1-y_i)\ln (1-p(x_i))] \\
         & = \sum[y_i\ln\frac{p(x_i)}{1-p(x_i)} + \ln(1-p(x_i))] \\
         & = \sum[y_i z_i - \ln(1 + e^{z_i})]
     \end{align}
-    ```
 
     使用梯度下降法求解时，取似然函数的**相反值**进行优化，求其梯度为：
 
