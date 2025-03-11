@@ -359,6 +359,7 @@
         & = -\sum_i (y_i - p(x_i)) \cdot x_j
     \end{aligned}
 ```
+```
 
     权重更新为：
     
