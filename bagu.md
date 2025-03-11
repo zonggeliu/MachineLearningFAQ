@@ -428,12 +428,13 @@
 2. XGBoost 基本原理
 
     在第 $t$ 轮训练中，在**保留前 $t-1$ 轮训练结果**的前提下，加入一棵树 $f_t$，使得目标函数**尽可能地降低**。用公式表达如下：
-    $$Obj_t  = \sum_{i=1}^n l(y_i, \hat{y}_i^t) 
-             = \sum_{i=1}^n l(y_i, \hat{y}_i^{t-1} + f_t(x_i)) $$
+   
+    $$Obj_t  = \sum_{i=1}^n l(y_i, \hat{y}_i^t) = \sum_{i=1}^n l(y_i, \hat{y}_i^{t-1} + f_t(x_i)) $$
+   
     设损失函数为 MSE，则原目标函数写为：
-    $$Obj_t = \sum_{i=1}^n (y_i - (\hat{y}_i^{t-1} + f_t(x_i)))^2 
-             = \sum_{i=1}^n[2(\hat{y}_i^{t-1} - y_i)f_t(x_i)+f_t(x_i)^2] + \sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2
-    $$
+   
+    $$Obj_t = \sum_{i=1}^n (y_i - (\hat{y}_i^{t-1} + f_t(x_i)))^2 = \sum_{i=1}^n[2(\hat{y}_i^{t-1} - y_i)f_t(x_i)+f_t(x_i)^2] + \sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2$$
+   
     其中， $\sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2$ 与本轮无关，可以视为常数， $(\hat{y}_i^{t-1} - y_i)$ 一般被叫做**残差**，表示了上一轮预测值与真实值之间的差异，也是 XGBoost 算法在每一轮中预测的主要目标。即，将上一轮的训练结果看作一个整体，而新的一轮则对残差值进行预测。
 
     ![xgboost](imgs/XGBoost.png)
