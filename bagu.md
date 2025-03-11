@@ -324,24 +324,24 @@
         , z = w^T x + b
 ```
 
-    但是，这个函数不可微，因此，我们使用 sigmoid 函数来拟合概率：
+但是，这个函数不可微，因此，我们使用 sigmoid 函数来拟合概率：
 
-    $$y=\frac{1}{1+e^z}, z=w^T x + b$$
+$$y=\frac{1}{1+e^z}, z=w^T x + b$$
 
-    将 $y$ 视为类后验概率估计，则重写公式有:
+将 $y$ 视为类后验概率估计，则重写公式有:
 
-    $$P(Y=1|x)=\frac{1}{1+e^z}, z=w^T x + b$$
-    
-    $$z = \ln\frac{P(Y=1|x)}{1-P(Y=1|x)}$$
+$$P(Y=1|x)=\frac{1}{1+e^z}, z=w^T x + b$$
 
-    因此，逻辑回归实际上是**使用线性回归模型的预测值来逼近分类任务的对数几率**，其优点有：
+$$z = \ln\frac{P(Y=1|x)}{1-P(Y=1|x)}$$
 
-    - 不仅能够预测出类别，还能预测出属于该类别的概率，对于一些需要预测概率的任务很适用；
-    - 对数几率函数在任意阶都是**连续可导的凸函数**，因此可以使用许多优化算法求解。
+因此，逻辑回归实际上是**使用线性回归模型的预测值来逼近分类任务的对数几率**，其优点有：
+
+- 不仅能够预测出类别，还能预测出属于该类别的概率，对于一些需要预测概率的任务很适用；
+- 对数几率函数在任意阶都是**连续可导的凸函数**，因此可以使用许多优化算法求解。
   
 3. 逻辑回归的损失函数与梯度
 
-    设：$P(Y=1|x) = p(x), P(Y=0|x) = 1 - p(x)$，则似然函数可以写为：
+    设： $P(Y=1|x) = p(x), P(Y=0|x) = 1 - p(x)$，则似然函数可以写为：
 
     $$L(w) = \prod[p(x_i)]^{y_i}[1-p(x_i)]^{1-y_i}$$
     
@@ -432,21 +432,26 @@
 
     在第 $t$ 轮训练中，在**保留前 $t-1$ 轮训练结果**的前提下，加入一棵树 $f_t$，使得目标函数**尽可能地降低**。用公式表达如下：
    
-    $$Obj_t = \sum_{i=1}^n l(y_i, \hat{y}_i^t) $$
+```math
+        \begin{aligned}
+            Obj_t & = \sum_{i=1}^n l(y_i, \hat{y}_i^t) \\
+            & = \sum_{i=1}^n l(y_i, \hat{y}_i^{t-1} + f_t(x_i)) \\
+        \end{aligned}
+```
+设损失函数为 MSE，则原目标函数写为：
+
+```math
+        \begin{aligned}
+            Obj_t &= \sum_{i=1}^n (y_i - (\hat{y}_i^{t-1} + f_t(x_i)))^2 \\
+            & = \sum_{i=1}^n[2(\hat{y}_i^{t-1} - y_i)f_t(x_i)+f_t(x_i)^2] + \sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2
+        \end{aligned}
+```
    
-    $$Obj_t =  \sum_{i=1}^n l(y_i, \hat{y}_i^{t-1} + f_t(x_i)) $$
+其中， $\sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2$ 与本轮无关，可以视为常数， $(\hat{y}_i^{t-1} - y_i)$ 一般被叫做**残差**，表示了上一轮预测值与真实值之间的差异，也是 XGBoost 算法在每一轮中预测的主要目标。即，将上一轮的训练结果看作一个整体，而新的一轮则对残差值进行预测。
 
-    设损失函数为 MSE，则原目标函数写为：
-   
-    $$Obj_t = \sum_{i=1}^n (y_i - (\hat{y}_i^{t-1} + f_t(x_i)))^2$$
+![xgboost](imgs/XGBoost.png)
 
-    $$Obj_t = \sum_{i=1}^n[2(\hat{y}_i^{t-1} - y_i)f_t(x_i)+f_t(x_i)^2] + \sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2 $$
-   
-    其中， $\sum_{i=1}^n ({y_i - \hat{y}_i^{t-1}})^2$ 与本轮无关，可以视为常数， $(\hat{y}_i^{t-1} - y_i)$ 一般被叫做**残差**，表示了上一轮预测值与真实值之间的差异，也是 XGBoost 算法在每一轮中预测的主要目标。即，将上一轮的训练结果看作一个整体，而新的一轮则对残差值进行预测。
-
-    ![xgboost](imgs/XGBoost.png)
-
-    此外，XGBoost 在每个叶子节点上都增加了正则化项 $\Omega(f_t) = \gamma T + \lambda\frac{1}{2}\sum^T_{j=1} w_j^2$，其中， $T$ 代表叶子节点数量， $\lambda\frac{1}{2}\sum^T_{j=1} w_j^2$ 为 L2 正则化项。
+此外，XGBoost 在每个叶子节点上都增加了正则化项 $\Omega(f_t) = \gamma T + \lambda\frac{1}{2}\sum^T_{j=1} w_j^2$，其中， $T$ 代表叶子节点数量， $\lambda\frac{1}{2}\sum^T_{j=1} w_j^2$ 为 L2 正则化项。
 
 
 
@@ -599,8 +604,8 @@
 1. 常见的文本相似度计算方法
 
     - 欧式距离，用于计算两等长**句子向量**的相似度。 $\text{distance} = \sqrt{(A-B)*(A-B)^T}$；
-    - 余弦距离，用于计算两等长**句子向量**的相似度。 $\text{distance} = \frac{A*B^T}{|A|*|B|}$；
-    - Jaccard 相似度。将句子看作单词的集合。则 A 与 B 的 Jaccard 相似度为：$\text{similarity} = \frac{|A\cap B|}{|A\cup B|}$；
+    - 余弦距离，用于计算两等长**句子向量**的相似度。 $\text{distance} = \frac{A*B^T}{ |A| * |B| }$；
+    - Jaccard 相似度。将句子看作单词的集合。则 A 与 B 的 Jaccard 相似度为：$\text{similarity} ={ | A \cap B| }{ | A \cup B | }$；
     - TF-IDF。TF 是词频 (Term Frequency)，表示在一个文章中某个单词出现的频率；IDF 是逆文本频率指数 (Inverse Document Frequency)，表示含有该关键词的文档占所有文档的比例。TF-IDF 建立在以下假设上：对区别文档最有意义的词语应该是那些在**文档中出现频率高**，而在整个文档集合的**其他文档中出现频率少**的词语；
     - 最小编辑距离。一种经典的距离计算方法，用来度量字符串之间的差异。将字符串 A 不断修改（增删改），直至成为字符串 B，所需要的修改次数代表了字符串 A 和 B 的差异大小。常使用动态规划来计算最小编辑距离。
 
@@ -636,41 +641,41 @@
       - **齐次性假设**：即隐藏的马尔可夫状态在任意时刻的状态只依赖于前一时刻的状态，与其他时刻的状态无关；
       - **观测独立性假设**：任意时刻的观测状态只取决与当前状态的隐藏状态，和其他时刻的观测状态或隐藏状态无关。
     - 隐马尔可夫模型的五个要素：
-      - **隐藏状态集** $Q$ = {$q_1$, $q_2$, ..., $q_N$}，即隐藏节点只能取值于该集合中的元素。
-      - **观测状态集** $V$ = {$v_1$, $v_2$, ..., $v_M$}，即观测节点的状态也只能取值于该集合中的元素。
+      - **隐藏状态集** $Q$ = { $q_1$, $q_2$, ..., $q_N$}，即隐藏节点只能取值于该集合中的元素。
+      - **观测状态集** $V$ = { $v_1$, $v_2$, ..., $v_M$}，即观测节点的状态也只能取值于该集合中的元素。
       - **隐藏状态转移矩阵** $A$ = $[a_{ij}]_{N\times N}$，表示从一种隐藏状态到另一种隐藏状态的转移概率。
       - **观测概率矩阵** $B$ = $[b_{ij}]_{N\times M}$，表示对于某一种隐藏状态，其观测状态的分布概率。
       - **初始隐藏状态概率** $\pi$ = $[p_1, p_2, ..., p_n]$，表示初始时刻处于各个隐藏状态的概率。
     - 隐马尔可夫模型要求解的基本问题：
       - **概率计算问题**。对于已知模型 $\lambda$ = $(A, B, \pi)$，和已知观测序列 $O$ = {$o_1$, $o_2$, ..., $o_M$}，求产生这种观测序列的概率是多少，即求 $p(O|\lambda)$。
-      - **学习问题**。对于已知观测序列 $O$ = {$o_1$, $o_2$, ..., $o_M$}，求解模型 $\lambda$ = $(A, B, \pi)$ 的参数，使得产生这种观测序列的概率 $p(O|\lambda)$ 最大，即用**最大似然估计**方法估计模型的参数。
-      - **解码问题**。同样对于已知模型 $\lambda$ = $(A, B, \pi)$，和已知观测序列 $O$ = {$o_1$, $o_2$, ..., $o_M$}，求解最优的隐藏状态序列 $I$ = {$i_1$, $i_2$, ..., $i_N$}，使得 $p(I|O)$ 最大。
+      - **学习问题**。对于已知观测序列 $O$ = { $o_1$, $o_2$, ..., $o_M$}，求解模型 $\lambda$ = $(A, B, \pi)$ 的参数，使得产生这种观测序列的概率 $p(O|\lambda)$ 最大，即用**最大似然估计**方法估计模型的参数。
+      - **解码问题**。同样对于已知模型 $\lambda$ = $(A, B, \pi)$，和已知观测序列 $O$ = { $o_1$, $o_2$, ..., $o_M$}，求解最优的隐藏状态序列 $I$ = { $i_1$, $i_2$, ..., $i_N$}，使得 $p(I|O)$ 最大。
     - 对于基本问题的解法：
       - 对第一个问题的解法：
         - 暴力解法：时间复杂度为 $O(TN^T)$；
         - 前向算法：利用动态规划思想，将前面时刻计算过的概率保存下来。
-          - 对于第一个时刻的状态：$a_1(i) = \pi_ib_i(o_1)$, $i\in [1,N]$；
-          - 对于第 $t$ 个时刻的状态：$a_t(i) = [\sum_{j=1}^N a_{t-1}(j)a_{ji}]b_i(o_t)$。
+          - 对于第一个时刻的状态： $a_1(i) = \pi_ib_i(o_1)$, $i\in [1,N]$；
+          - 对于第 $t$ 个时刻的状态： $a_t(i) = [\sum_{j=1}^N a_{t-1}(j)a_{ji}]b_i(o_t)$。
       - 对第二个问题的解法：
         
-        Baum-Welch 算法：与 EM 算法相似，在 E-step 中，计算联合分布 $P(O,I|\lambda)$ 和条件分布 $P(I|O,\bar{\lambda})$，根据联合分布和条件分布计算期望表达式 $L(\lambda,\bar{\lambda})$；在 M-step 中最大化 $\lambda$ 的值，使得 $\bar{\lambda} = \argmax_\lambda L(\lambda,\bar{\lambda})$。
+        Baum-Welch 算法：与 EM 算法相似，在 E-step 中，计算联合分布 $P(O,I|\lambda)$ 和条件分布 $P(I|O,\bar{\lambda})$，根据联合分布和条件分布计算期望表达式 $L(\lambda,\bar{\lambda})$；在 M-step 中最大化 $\lambda$ 的值，使得 $\bar{\lambda} = argmax_\lambda L(\lambda,\bar{\lambda})$。
     
       - 对第三个问题的解法：
 
         Viterbi 维特比算法：可以看作一个求最长路径的动态规划算法。
 
-        初始化两个状态变量：$\delta_t(i)$ 表示在 $t$ 时刻隐藏状态为 $i$ 的所有状态转移路径中概率最大值，初始化 $\delta_1(i) = \pi_i b_i(o_1)$。$\psi_t(i)$ 则是在 $t$ 时刻使得隐藏状态为 $i$ 的转移路径中概率最大的前一时刻的隐藏状态，初始化为 0。则两状态变量的递推表达式为：
+        初始化两个状态变量： $\delta_t(i)$ 表示在 $t$ 时刻隐藏状态为 $i$ 的所有状态转移路径中概率最大值，初始化 $\delta_1(i) = \pi_i b_i(o_1)$。 $\psi_t(i)$ 则是在 $t$ 时刻使得隐藏状态为 $i$ 的转移路径中概率最大的前一时刻的隐藏状态，初始化为 0。则两状态变量的递推表达式为：
 
-        $$
-            \begin{cases}
-                \delta_t(i) = \max_{1\leq j\leq N}[\delta_{t-1}(j)a_{ji}]b_i(o_t) \\
-                \psi_t(i) = \argmax_{1\leq j\leq N}[\delta_{t-1}(j)a_{ji}]
-            \end{cases}
-        $$
+```math
+          \begin{cases}
+              \delta_t(i) = \max_{1\leq j\leq N}[\delta_{t-1}(j)a_{ji}]b_i(o_t) \\
+              \psi_t(i) = argmax_{1\leq j\leq N}[\delta_{t-1}(j)a_{ji}]
+          \end{cases}
+```
 
-        在第 $T$ 步，取 $\delta_T(i)$ 最大值即为最可能隐藏序列出现的概率，此时最大的 $\psi_T(i)$ 即为第 $T$ 的状态。
+在第 $T$ 步，取 $\delta_T(i)$ 最大值即为最可能隐藏序列出现的概率，此时最大的 $\psi_T(i)$ 即为第 $T$ 的状态。
 
-        随后，从第 $T$ 步开始回溯，即 $i^*_{t-1}$ = $\psi_t(i^*_t)$，得到完整的隐藏序列 $I=(i^*_1, i^*_2, ..., i^*_T)$。
+随后，从第 $T$ 步开始回溯，即 $i^{\star}_{t-1}$ = $\psi_t( i^{\star}_t)$，得到完整的隐藏序列 $I=( i^{\star}_1, i^{\star}_2, ..., i^{\star}_T)$。
 
 
 2. 条件随机场 Conditional Random Field, CRF
@@ -694,9 +699,9 @@
 
     相比于 HMM 需要对状态转移矩阵和观测概率矩阵建模，CRF 属于判别模型，其直接对 $P(I|O)$ 建模：
 
-    $$ P(I|O) = \frac{1}{Z(O)}e^{\sum_i^T \sum_k^M \lambda_k f_k(O, I_{i-1}, I_i, i)}$$
+$$ P(I|O) =  \frac{1}{Z(O)} e^{\sum_i^T \sum_k^M \lambda_k f_k(O, I_{i-1}, I_i, i)}$$
 
-    其中，下标 i 表示当前所在的节点（token）位置，下标 k 表示第 k 个特征函数，并且每个特征函数都附属一个权重 $\lambda_k$， $\frac{1}{Z(O)}$ 是归一化系数。
+其中，下标 i 表示当前所在的节点（token）位置，下标 k 表示第 k 个特征函数，并且每个特征函数都附属一个权重 $\lambda_k$， $\frac{1}{Z(O)}$ 是归一化系数。
 
 
 ### RNN / LSTM
@@ -833,14 +838,15 @@
         由于 Transformer 模型没有循环结构或卷积结构，为了使模型能够学习到输入序列的顺序，我们需要插入一些关于 tokens 位置的信息。因此提出了 **Positional Encoding** 的概念，其与 input embedding 具有相同的维度，便于相加。
 
         但是，如果直接使用计数的方式来进行 encoding，即 $pos = 1, 2, ..., n - 1$，那么最后一个 token 的encoding 将会比第一个 token 大很多，与原 embedding 相加后会造成数据不平衡的现象。原论文作者们的方法是使用了不同频率的正弦和余弦函数来作为位置编码：
-        $$
+      
+```math
             \begin{aligned}
                 PE_{(pos,2i)}   & = sin(pos/10000^{2i/d_{model}}) \\
                 PE_{(pos,2i+1)} & = cos(pos/10000^{2i/d_{model}}) \\
             \end{aligned}
-        $$
+```
 
-        ```python
+```python
         def get_positional_embedding(d_model, max_seq_len):
             positional_embedding = torch.tensor([
                     [pos / np.power(10000, 2.0 * (i // 2) / d_model) for i in range(d_model)]  # i 的取值为 [0, d_model)
@@ -850,14 +856,14 @@
             positional_embedding[:, 0::2] = torch.sin(positional_embedding[:, 0::2])
             positional_embedding[:, 1::2] = torch.cos(positional_embedding[:, 1::2])
             return positional_embedding
-        ```
+```
     
-    - Add & Norm 层
-      - Add 指的是 Residual Connection， $y=F(x)+x$. 与 ResNet 的原理相似，是将上一层的信息直接传到下一层，可以帮助解决多层神经网络训练困难的问题。同时，引入残差连接有助于减轻神经网络在深层退化的问题。
-      - Norm 指的是 Layer Normalization，在层与层之间对每一行数据进行缩放。这样可以缓解梯度消失的状况，同时使模型更快收敛。
-        > **Batch Normalization 和 Layer Normalization 的区别？**
-        > 
-        > 在 BN 中，我们将每一个 batch 中的数据**按列**进行缩放。而在 NLP 任务中，由于输入序列的长度是不确定的，且不同行同一位置的单词直接并没有直接联系，直接做缩放可能会影响原语义表达。因此，在 NLP 等序列型任务中，我们一般采用 Layer Normalization，即对每一行数据进行缩放。
+- Add & Norm 层
+  - Add 指的是 Residual Connection， $y=F(x)+x$. 与 ResNet 的原理相似，是将上一层的信息直接传到下一层，可以帮助解决多层神经网络训练困难的问题。同时，引入残差连接有助于减轻神经网络在深层退化的问题。
+  - Norm 指的是 Layer Normalization，在层与层之间对每一行数据进行缩放。这样可以缓解梯度消失的状况，同时使模型更快收敛。
+    > **Batch Normalization 和 Layer Normalization 的区别？**
+    > 
+    > 在 BN 中，我们将每一个 batch 中的数据**按列**进行缩放。而在 NLP 任务中，由于输入序列的长度是不确定的，且不同行同一位置的单词直接并没有直接联系，直接做缩放可能会影响原语义表达。因此，在 NLP 等序列型任务中，我们一般采用 Layer Normalization，即对每一行数据进行缩放。
     
 
 4. BERT: Bi-directional Encoder Representation from Transformers
@@ -907,7 +913,7 @@
     - 计算 BERT 模型的参数数量？
         - 词向量参数：vocab_size=30522, hidden_size=768, max_position_embedding=512, token_type_embedding=2，因此参数量为 (30522 + 512 + 2) * 768。
         - Multi-head Attention：len = hidden_size = 768, $d_k$ = $d_q$ = $d_v$ = $d_{model}/n_{head}$ = 768 / 12 = 64，将12个头进行拼接后还要进行线性变换，因此参数量为 768 * 64 * 12 * 3 + 768 * 768。
-        - 前馈网络参数：$\text{FFN}(x)=\max(0, xW_1+b_1)W_2 + b_2$，W_1 和 W_2 的参数量均为 768 * (768 * 4)，总参数量为 768 * 768 * 4 * 2。
+        - 前馈网络参数： $\text{FFN}(x)=\max(0, xW_1+b_1)W_2 + b_2$，W_1 和 W_2 的参数量均为 768 * (768 * 4)，总参数量为 768 * 768 * 4 * 2。
 
         总参数量 = 词向量参数 + 12 (层数) * (Multi-head + 前馈网络) = 110M
 
@@ -959,7 +965,7 @@
 
         TinyBERT 的知识蒸馏采取每隔 k 层蒸馏的方式。设 Teacher BERT 有 12 层，TinyBERT 有 4 层，则学生模型每隔 3 层就与教师模型计算一次 loss，其中，loss 又分为 Attention Loss 和 Hidden Loss：
 
-        $$\mathcal{L}_{attn} = \frac{1}{h}\sum_{i=1}^h \text{MSE}(A_i^S, A_i^T)$$
+        $$\mathcal{L}_{attn} = \frac{1}{h} \sum_i^h   \text{MSE}(A_i^S, A_i^T)$$
       
         其中，h 为 Attention 头数， $A_i\in \{A_q,A_k,A_v\}$。
 
