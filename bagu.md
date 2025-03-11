@@ -87,20 +87,20 @@
 
     ![ConfusionMatrix](imgs/ConfusionMatrix.jpg)
 
-3. macro-$F_1$ vs micro-$F_1$
+3. macro- $F_1$ vs micro- $F_1$
 
     很多时候我们有多个二分类混淆矩阵（例如多次训练与测试 / 多个数据集 / 多分类任务中每两两类别的组合等），这是我们希望在 $n$ 个二分类混淆矩阵上综合考察模型性能。
 
-    - macro-$F_1$
+    - macro- $F_1$
 
-        一种直接的做法是直接计算各个混淆矩阵的精确率和召回率，再计算平均值，分别得到 macro-$P$、macro-$R$和对应的macro-$F_1$. 
+        一种直接的做法是直接计算各个混淆矩阵的精确率和召回率，再计算平均值，分别得到 macro- $P$、macro- $R$和对应的macro- $F_1$. 
         $$\text{macro-}P = \frac{1}{n}\sum_{i=1}^n P_i, \qquad
             \text{macro-}R = \frac{1}{n}\sum_{i=1}^n R_i， $$
         $$\text{macro-}F_1 = \frac{2 \times \text{macro-}P \times \text{macro-}R}{\text{macro-}P + \text{macro-}R}$$
     
-    - micro-$F_1$
+    - micro- $F_1$
 
-        另一种做法是先将各个混淆矩阵的对应元素进行平均，得到$\overline{TP}$、$\overline{TN}$、$\overline{FP}$和$\overline{FN}$，再基于这些值计算出micro-$P$、micro-$R$和对应的micro-$F_1$. 
+        另一种做法是先将各个混淆矩阵的对应元素进行平均，得到$\overline{TP}$、$\overline{TN}$、$\overline{FP}$和$\overline{FN}$，再基于这些值计算出micro- $P$、micro- $R$和对应的micro- $F_1$. 
         $$\text{micro-}P = \frac{\overline{TP}}{\overline{TP}+\overline{FP}}, \qquad
             \text{micro-}R = \frac{\overline{TP}}{\overline{TP}+\overline{FN}}， $$
         $$\text{micro-}F_1 = \frac{2 \times \text{micro-}P \times \text{micro-}R}{\text{micro-}P + \text{micro-}R}$$
