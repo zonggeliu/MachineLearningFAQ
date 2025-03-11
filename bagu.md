@@ -360,8 +360,8 @@
 \end{aligned}
 ```
 
-    权重更新为：    
-    $$w_j := w_j + \eta(\sum_i (y_i - p(x_i)) \cdot x_j),\text{ for }i\text{ in range}(n)$$
+权重更新为：    
+$$w_j := w_j + \eta(\sum_i (y_i - p(x_i)) \cdot x_j),\text{ for }i\text{ in range}(n)$$
 
 4. 与 SVM 的区别？
 
